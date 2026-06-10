@@ -1,0 +1,43 @@
+# 环境变量和密钥
+.env
+.env.local
+config/config.yaml
+config/config.local.yaml
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# 输出文件
+output/
+logs/
+*.mp4
+*.mp3
+*.wav
+*.png
+*.jpg
+*.jpeg
+
+# 临时文件
+*.tmp
+*.temp
+*TEMP_*.mp4
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 测试
+.pytest_cache/
+.coverage
+htmlcov/

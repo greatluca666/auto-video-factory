@@ -1,0 +1,81 @@
+name: Daily Video Generation
+
+on:
+  schedule:
+    # 每天北京时间 9:00 (UTC 1:00)
+    - cron: '0 1 * * *'
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  generate-videos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120  # 2小时超时
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Create config file
+        run: |
+          mkdir -p config
+          cat > config/config.yaml << EOF
+          llm:
+            default_provider: "openai"
+            anthropic_api_key: "${{ secrets.ANTHROPIC_API_KEY }}"
+            openai_api_key: "${{ secrets.OPENAI_API_KEY }}"
+            openai_base_url: "${{ secrets.OPENAI_BASE_URL }}"
+
+          image:
+            provider: "replicate"
+            replicate_api_token: "${{ secrets.REPLICATE_API_TOKEN }}"
+            model: "black-forest-labs/flux-1.1-pro"
+
+          tts:
+            provider: "openai"
+            openai_api_key: "${{ secrets.OPENAI_API_KEY }}"
+            openai_base_url: "${{ secrets.OPENAI_BASE_URL }}"
+
+          working_dir: "./output"
+          EOF
+
+      - name: Set environment variables
+        run: |
+          echo "OPENAI_MODEL=deepseek-v3.2" >> $GITHUB_ENV
+
+      - name: Run automation
+        run: |
+          python -m automation.main
+        env:
+          PYTHONUNBUFFERED: 1
+
+      - name: Upload generated videos
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated-videos-${{ github.run_number }}
+          path: |
+            output/videos/*.mp4
+            output/logs/*.log
+          retention-days: 7
+
+      - name: Send notification on failure
+        if: failure()
+        run: |
+          echo "视频生成失败，请检查日志"
+          # 这里可以添加通知逻辑（邮件/Webhook）
+
+      - name: Clean up
+        if: always()
+        run: |
+          rm -rf output/temp
+          rm -rf output/images

@@ -1,0 +1,45 @@
+# 核心依赖
+anthropic>=0.25.0
+openai>=1.30.0
+requests>=2.31.0
+python-dotenv>=1.0.0
+pydantic>=2.7.0
+pyyaml>=6.0.1
+
+# 视频处理
+moviepy>=1.0.3
+ffmpeg-python>=0.2.0
+pillow>=10.3.0
+opencv-python>=4.9.0
+
+# 音频处理
+pydub>=0.25.1
+azure-cognitiveservices-speech>=1.37.0
+
+# 图片生成
+replicate>=0.25.0
+stability-sdk>=0.8.0
+
+# 数据处理
+pandas>=2.2.0
+numpy>=1.26.0
+
+# 网络请求
+httpx>=0.27.0
+aiohttp>=3.9.0
+
+# 工具库
+loguru>=0.7.2
+tqdm>=4.66.0
+tenacity>=8.2.3
+
+# RSS订阅
+feedparser>=6.0.11
+
+# 定时任务
+schedule>=1.2.0
+apscheduler>=3.10.4
+
+# 数据库(可选)
+sqlalchemy>=2.0.30
+redis>=5.0.4
