@@ -50,7 +50,8 @@ jobs:
 
       - name: Run automation
         run: |
-          python -m automation.main
+          mkdir -p logs
+          python -m automation.main 2>&1 | tee logs/automation.log
         env:
           PYTHONUNBUFFERED: 1
           # LLM配置
@@ -88,6 +89,16 @@ jobs:
             output/videos/*.mp4
             output/logs/*.log
           retention-days: 7
+
+      - name: Upload logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-logs-${{ github.run_number }}
+          path: |
+            output/logs/*.log
+            logs/*.log
+          retention-days: 14
 
       - name: Send notification on failure
         if: failure()
