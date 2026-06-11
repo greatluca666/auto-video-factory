@@ -36,8 +36,8 @@ class VideoGeneratorConfig(BaseModel):
     azure_tts_region: str = Field(default_factory=lambda: os.getenv("AZURE_TTS_REGION", "eastus"))
 
     # 视频参数
-    video_quality: str = Field(default_factory=lambda: os.getenv("VIDEO_QUALITY", "1080p"))
-    video_fps: int = Field(default_factory=lambda: int(os.getenv("VIDEO_FPS", "30")))
+    video_quality: str = Field(default_factory=lambda: os.getenv("VIDEO_QUALITY") or "1080p")
+    video_fps: int = Field(default_factory=lambda: int(os.getenv("VIDEO_FPS") or "30"))
     video_duration_min: int = 15  # 最短15秒
     video_duration_max: int = 60  # 最长60秒
 
@@ -75,9 +75,9 @@ class PublisherConfig(BaseModel):
 
 class AppConfig(BaseModel):
     """应用配置"""
-    working_dir: Path = Field(default_factory=lambda: Path(os.getenv("WORKING_DIR", "./output")))
-    log_level: str = Field(default_factory=lambda: os.getenv("LOG_LEVEL", "INFO"))
-    max_workers: int = Field(default_factory=lambda: int(os.getenv("MAX_WORKERS", "5")))
+    working_dir: Path = Field(default_factory=lambda: Path(os.getenv("WORKING_DIR") or "./output"))
+    log_level: str = Field(default_factory=lambda: os.getenv("LOG_LEVEL") or "INFO")
+    max_workers: int = Field(default_factory=lambda: int(os.getenv("MAX_WORKERS") or "5"))
 
     # 子配置
     llm: LLMConfig = Field(default_factory=LLMConfig)
