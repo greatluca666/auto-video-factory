@@ -54,21 +54,16 @@ jobs:
         env:
           PYTHONUNBUFFERED: 1
           # LLM配置
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL }}
           OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
-          QWEN_API_KEY: ${{ secrets.QWEN_API_KEY }}
+          # 图片生成
+          IMAGE_GEN_API_KEY: ${{ secrets.IMAGE_GEN_API_KEY }}
+          IMAGE_GEN_BASE_URL: ${{ secrets.IMAGE_GEN_BASE_URL }}
+          IMAGE_GEN_MODEL: ${{ secrets.IMAGE_GEN_MODEL }}
           # 热点采集
           WEIBO_API_KEY: ${{ secrets.WEIBO_API_KEY }}
           WEIBO_COOKIE: ${{ secrets.WEIBO_COOKIE }}
-          # 视频生成
-          HEYGEN_API_KEY: ${{ secrets.HEYGEN_API_KEY }}
-          AZURE_TTS_KEY: ${{ secrets.AZURE_TTS_KEY }}
-          AZURE_TTS_REGION: ${{ secrets.AZURE_TTS_REGION }}
-          # 图片生成
-          REPLICATE_API_TOKEN: ${{ secrets.REPLICATE_API_TOKEN }}
-          STABILITY_API_KEY: ${{ secrets.STABILITY_API_KEY }}
           # 发布平台
           DOUYIN_CLIENT_KEY: ${{ secrets.DOUYIN_CLIENT_KEY }}
           DOUYIN_CLIENT_SECRET: ${{ secrets.DOUYIN_CLIENT_SECRET }}
