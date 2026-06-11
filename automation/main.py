@@ -120,10 +120,37 @@ class AutomationFactory:
 
 def main():
     """主函数"""
+    import os
     setup_logger()
 
     factory = AutomationFactory()
-    factory.start()
+
+    # CI环境：立即执行一次完整流程
+    if os.getenv("CI") == "true":
+        logger.info("\n" + "=" * 80)
+        logger.info("CI模式：立即执行完整流程")
+        logger.info("=" * 80)
+
+        try:
+            # 1. 规划任务
+            logger.info("\n[步骤1/2] 规划任务...")
+            tasks = factory.scheduler.plan_daily_tasks()
+            logger.info(f"✓ 规划完成: {len(tasks)} 个任务")
+
+            # 2. 立即执行（不等待定时）
+            logger.info("\n[步骤2/2] 执行任务...")
+            factory.scheduler.execute_tasks(hour=None)  # None表示执行所有任务
+
+            logger.info("\n" + "=" * 80)
+            logger.info("CI执行完成")
+            logger.info("=" * 80)
+
+        except Exception as e:
+            logger.error(f"✗ CI执行失败: {e}", exc_info=True)
+            sys.exit(1)
+    else:
+        # 本地环境：启动调度器
+        factory.start()
 
 
 if __name__ == "__main__":

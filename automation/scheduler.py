@@ -107,20 +107,29 @@ class SmartScheduler:
 
         return tasks
 
-    def execute_tasks(self, time_slot: int):
+    def execute_tasks(self, hour: int = None):
         """
         执行指定时段的任务
 
         Args:
-            time_slot: 时段（8/12/18/22）
+            hour: 时段（8/12/18/22），None表示执行所有pending任务
         """
         logger.info(f"\n{'=' * 60}")
-        logger.info(f"执行 {time_slot}点 时段任务")
+        if hour is None:
+            logger.info("执行所有pending任务（CI模式）")
+        else:
+            logger.info(f"执行 {hour}点 时段任务")
         logger.info(f"{'=' * 60}")
 
         # 加载任务
         tasks = self._load_tasks()
-        slot_tasks = [t for t in tasks if t['scheduled_hour'] == time_slot and t['status'] == 'pending']
+
+        if hour is None:
+            # CI模式：执行所有pending任务
+            slot_tasks = [t for t in tasks if t['status'] == 'pending']
+        else:
+            # 定时模式：执行指定时段任务
+            slot_tasks = [t for t in tasks if t['scheduled_hour'] == hour and t['status'] == 'pending']
 
         logger.info(f"待执行任务: {len(slot_tasks)} 个")
 
