@@ -48,15 +48,41 @@ jobs:
           working_dir: "./output"
           EOF
 
-      - name: Set environment variables
-        run: |
-          echo "OPENAI_MODEL=deepseek-v3.2" >> $GITHUB_ENV
-
       - name: Run automation
         run: |
           python -m automation.main
         env:
           PYTHONUNBUFFERED: 1
+          # LLM配置
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL }}
+          OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
+          QWEN_API_KEY: ${{ secrets.QWEN_API_KEY }}
+          # 热点采集
+          WEIBO_API_KEY: ${{ secrets.WEIBO_API_KEY }}
+          WEIBO_COOKIE: ${{ secrets.WEIBO_COOKIE }}
+          # 视频生成
+          HEYGEN_API_KEY: ${{ secrets.HEYGEN_API_KEY }}
+          AZURE_TTS_KEY: ${{ secrets.AZURE_TTS_KEY }}
+          AZURE_TTS_REGION: ${{ secrets.AZURE_TTS_REGION }}
+          # 图片生成
+          REPLICATE_API_TOKEN: ${{ secrets.REPLICATE_API_TOKEN }}
+          STABILITY_API_KEY: ${{ secrets.STABILITY_API_KEY }}
+          # 发布平台
+          DOUYIN_CLIENT_KEY: ${{ secrets.DOUYIN_CLIENT_KEY }}
+          DOUYIN_CLIENT_SECRET: ${{ secrets.DOUYIN_CLIENT_SECRET }}
+          DOUYIN_ACCESS_TOKEN: ${{ secrets.DOUYIN_ACCESS_TOKEN }}
+          KUAISHOU_APP_ID: ${{ secrets.KUAISHOU_APP_ID }}
+          KUAISHOU_APP_SECRET: ${{ secrets.KUAISHOU_APP_SECRET }}
+          WEIXIN_APP_ID: ${{ secrets.WEIXIN_APP_ID }}
+          WEIXIN_APP_SECRET: ${{ secrets.WEIXIN_APP_SECRET }}
+          # 其他配置
+          WORKING_DIR: ${{ secrets.WORKING_DIR }}
+          LOG_LEVEL: ${{ secrets.LOG_LEVEL }}
+          MAX_WORKERS: ${{ secrets.MAX_WORKERS }}
+          VIDEO_QUALITY: ${{ secrets.VIDEO_QUALITY }}
+          VIDEO_FPS: ${{ secrets.VIDEO_FPS }}
 
       - name: Upload generated videos
         if: success()
