@@ -15,6 +15,7 @@ opencv-python>=4.9.0
 # 音频处理
 pydub>=0.25.1
 azure-cognitiveservices-speech>=1.37.0
+edge-tts>=6.1.0
 
 # 图片生成
 replicate>=0.25.0
