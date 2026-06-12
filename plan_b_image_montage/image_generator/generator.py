@@ -503,7 +503,7 @@ class ImageGenerator:
                     logger.error(f"异步任务超时 ({poll_timeout}秒)")
                     return None
 
-                if "data" in data and len(data["data"]) > 0:
+                if "data" in data and data["data"] is not None and len(data["data"]) > 0:
                     item = data["data"][0]
 
                     # 支持url、b64_json或data URI格式
@@ -553,6 +553,12 @@ class ImageGenerator:
                         "image_path": str(image_path),
                         "prompt": enhanced_prompt
                     }
+                else:
+                    # API返回空data或None
+                    logger.error(f"API响应无效: data={data.get('data')}, 完整响应: {response_text[:500]}")
+                    if "error" in data:
+                        logger.error(f"API错误信息: {data['error']}")
+                    return None
 
                 # 成功则跳出重试循环
                 break
